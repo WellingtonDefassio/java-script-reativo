@@ -63,5 +63,19 @@ function somar2(a,b){
     return a + b
 }
 
+
+const potenciaArrow = (base, exp) => Math.pow(base,exp)
+
+const potenciaArrowInsideArrow = base =>  exp =>  Math.pow(base, exp)
+
+
+// function potenciaArrow(base){
+//     return function(exp) {
+//         return Math.pow(base, exp)
+//     }
+// }
+
+console.log(potenciaArrow(10,5))
 console.log(calcular(10)(5)(multiplicar))
 console.log(calcular(5)(6)(somar2))
+console.log(potenciaArrowInsideArrow(10)(5))
