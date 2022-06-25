@@ -16,3 +16,19 @@ const getNome = obj => obj.nome
 const result = carrinho.filter(quantidadeMaiorQueZero).map(getNome)
 
 console.log(result)
+
+
+Array.prototype.meuFilter = function(fn) {
+    const novoArray = []
+
+    for(let i = 0; i < this.length; i++ ) {
+        if(fn(this[i], i, this)) {
+            novoArray.push(this[i])
+        }
+    }
+    return novoArray;
+}
+
+const result2 = carrinho.meuFilter(quantidadeMaiorQueZero).map(getNome)
+
+console.log(result2)
