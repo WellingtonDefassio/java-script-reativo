@@ -21,9 +21,10 @@ const getMedia = (acc, el) => {
         return {
             qtde: novaQtde,
             total: novoTotal,
-            media: novoTotal / novaQtde
+            media: novoTotal / novaQtde,
+            totalComDesconto: novoTotal * 0.8
         }
     }
-const mediaInicia =  {qtde: 0, total: 0, media: 0}
+const mediaInicia =  {qtde: 0, total: 0, media: 0, totalComDesconto: 0}
 
- console.log(carrinho.filter(isFragil).map(elements).reduce(getMedia,mediaInicia).media)
+ console.log(carrinho.filter(isFragil).map(elements).reduce(getMedia,mediaInicia))
