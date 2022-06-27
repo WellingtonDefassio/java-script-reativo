@@ -1,0 +1,1 @@
+rExtensao).then(console.log)
