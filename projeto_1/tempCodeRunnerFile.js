@@ -1,1 +1,1 @@
-rExtensao).then(console.log)
+const agruparPalavras = (palavras) => {
