@@ -1,5 +1,5 @@
 import fs from 'fs'
-import path from 'path'
+import path, { resolve } from 'path'
 
 export function lerDiretorio(caminho) {
    return new Promise((resolve, reject) => {
@@ -17,6 +17,19 @@ export function lerDiretorio(caminho) {
 }
 
 export function filtrarExtensao(array, extensao){
-   return array.filter(el =>el.endsWith(extensao))
-     
+   return new Promise((resolve) => {
+      const result = array.filter(el =>el.endsWith(extensao))
+      resolve(result)
+   })     
 }
+
+export function lerArquivo(caminho){
+   return new Promise((resolve, reject) => {
+    const conteudo =  fs.readFileSync(caminho, {encoding: 'utf-8'})
+    resolve(conteudo);
+   })
+}
+export function lerArquivos(caminhos){
+   return Promise.all(caminhos.map(caminho => lerArquivo(caminho)))
+   }
+
