@@ -69,3 +69,16 @@ export function ordenarPorAtributoNumerico(attr, ordem = 'asc') {
       return [...array].sort(ordem === 'asc' ? asc : desc)
    }
 }
+
+export function composicao(...fns) {
+   return function (valor) {
+       return fns.reduce(async (acc, fn) => {
+           if (Promise.resolve(acc) == acc) {
+               return fn(await acc)
+           }
+           else {
+               return fn(acc)
+           }
+       }, valor)
+   }
+}

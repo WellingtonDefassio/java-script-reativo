@@ -1,1 +1,1 @@
-const agruparPalavras = (palavras) => {
+iltrarExtensao('srt')).then(console.log)

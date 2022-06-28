@@ -29,7 +29,7 @@ const agruparPalavras = (palavras) => {
 
 
 
-const result = lerDiretorio(caminho)
+ lerDiretorio(caminho)
 .then(filtrarExtensao('srt'))
 .then(lerArquivos)
 .then(juntarConteudos)
