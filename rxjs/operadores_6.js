@@ -1,26 +1,47 @@
 const { from, Observable } = require('rxjs')
 
 
-function createPipeOperator(nextFn){
+function createPipeOperator(nextGenerator){
     return function (obsSource) {
         return new Observable(sub => {
             obsSource.subscribe({
-                next(v) {
-                    nextFn(sub, v)
-                }
+               next: nextGenerator(sub)
             })
         })
     }
 
 }
+// function createPipeOperator(nextFn){
+//     return function (obsSource) {
+//         return new Observable(sub => {
+//             obsSource.subscribe({
+//                 next(v) {
+//                     nextFn(sub, v)
+//                 }
+//             })
+//         })
+//     }
+
+// }
 
 
 function primeiro() {
-    return createPipeOperator((subscriber, value) => {
-        subscriber.next(value)
-        subscriber.complete()
-    })
+    return createPipeOperator((sub) =>
+    { 
+        return function(valor){
+            sub.next(valor); // <- retorna este valor
+            sub.complete(); // <- retorna este valor
+        }
+    }) 
+
+
+
+    // return createPipeOperator((subscriber, value) => {
+    //     subscriber.next(value)
+    //     subscriber.complete()
+    // })
 }
+
 function nenhum() {
     return function (obsSource) {
         return new Observable(sub => {
