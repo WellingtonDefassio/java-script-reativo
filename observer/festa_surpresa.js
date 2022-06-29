@@ -19,15 +19,17 @@ function namorada() {
         console.log('N: Surpresa!!!')
 }
 
-function sindico() {
+export function sindico(evento) {
     console.log('S: Monitorando o barulho')
+    console.log(`S: ${evento.resp}`)
+    console.log(`S: ${evento.date}`)
 }
 
-async function porteiro(interessados){
+ export async function porteiro(interessados){
       while(true) {
         const resp = await obterResposta('O namorado chegou? (s/N/q) ')
         if(resp.toLowerCase() === 's') {
-            (interessados || []).forEach(obs => obs())
+            (interessados || []).forEach(obs => obs({ resp, date: Date.now() }))
             break;
         } else if(resp.toLowerCase() === 'q') {
             break;
