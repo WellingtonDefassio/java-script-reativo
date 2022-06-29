@@ -1,6 +1,6 @@
 import path from 'path';
 import {fileURLToPath} from 'url';
-import {lerDiretorio, filtrarExtensao, lerArquivos, removerSeVazio, removerSeIncluir,removerSeApenasNumero, removerSimbolos, ordenarPorAtributoNumerico} from './funcoes.js'
+import {lerDiretorio, filtrarExtensao,separarTextoPor, lerArquivos,lerArquivo, removerSeVazio, removerSeIncluir,removerSeApenasNumero, removerSimbolos, ordenarPorAtributoNumerico} from './funcoes.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -30,6 +30,8 @@ const agruparPalavras = (palavras) => {
 
 lerDiretorio(caminho).pipe(
     filtrarExtensao('srt'),
+    lerArquivo(),
+    separarTextoPor('\n')
 
 ).subscribe(console.log)
 

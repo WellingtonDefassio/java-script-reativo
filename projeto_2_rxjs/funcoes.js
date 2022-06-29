@@ -36,11 +36,17 @@ export function filtrarExtensao(extensao) {
 //    })
 // }
 
-export function lerArquivo(caminho) {
-   return new Promise((resolve, reject) => {
-      const conteudo = fs.readFileSync(caminho, { encoding: 'utf-8' })
-      resolve(conteudo);
-   })
+export function lerArquivo() {
+      return createPipeOperator((subscriber) => ({
+         next(caminho) {
+            try {
+               const conteudo = (fs.readFileSync(caminho, { encoding: 'utf-8' }))
+               subscriber.next(conteudo.toString())
+            } catch (error) {
+               subscriber.error(error)
+            }
+         }
+      }))
 }
 export function lerArquivos(caminhos) {
    return Promise.all(caminhos.map(caminho => lerArquivo(caminho)))
@@ -73,6 +79,16 @@ export function removerSimbolos(simbolos) {
    }
 }
 
+export function separarTextoPor(simbolo) {
+   return createPipeOperator((subscriber) => ({
+      next(textao){
+         textao.split(simbolo).forEach(part => {
+            subscriber.next(part)
+         })
+      }
+   }))
+}
+
 export function ordenarPorAtributoNumerico(attr, ordem = 'asc') {
    return function (array) {
       const desc = (o1, o2) => o2[attr] - o1[attr]
@@ -81,17 +97,19 @@ export function ordenarPorAtributoNumerico(attr, ordem = 'asc') {
    }
 }
 
-function createPipeOperator(nextGenerator){
+function createPipeOperator(operatorFn){
    return function (obsSource) {
-       return new Observable(sub => {
+       return new Observable(subscribe => {
+           const sub = operatorFn(subscribe)
            obsSource.subscribe({
-              next: nextGenerator(sub)
+               next: sub.next,
+               error: sub.error || (e => subscribe.error(e)),
+               complete: sub.complete || (() => subscribe.complete())
            })
        })
    }
 
 }
-
 // export function composicao(...fns) {
 //    return function (valor) {
 //        return fns.reduce(async (acc, fn) => {
