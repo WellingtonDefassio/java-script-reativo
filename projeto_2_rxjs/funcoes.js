@@ -52,8 +52,14 @@ export function lerArquivos(caminhos) {
    return Promise.all(caminhos.map(caminho => lerArquivo(caminho)))
 }
 
-export function removerSeVazio(array) {
-   return array.filter(el => el.trim())
+export function removerSeVazio() {
+   return createPipeOperator((subscriber) => ({
+      next(texto) {
+         if(texto.trim()) {
+            subscriber.next(texto)
+         }
+      }
+   }))
 }
 
 export function removerSeIncluir(texto) {
@@ -62,21 +68,26 @@ export function removerSeIncluir(texto) {
    }
 }
 
-export function removerSeApenasNumero(array) {
-   return array.filter(el => {
-      const num = parseInt(el.trim())
-      return num !== num;
-   })
+export function removerSeApenasNumero() {
+   return createPipeOperator((subscriber) => ({
+         next(texto) {
+            const num = parseInt(texto.trim())
+            if(num !== num){
+               subscriber.next(texto)
+            }
+         }
+   }))
 }
 
 export function removerSimbolos(simbolos) {
-   return function (array) {
-      return array.map(el => {
-         return simbolos.reduce((acc, simbolo) => {
+  return createPipeOperator(subscriber => ({
+      next(texto){
+        const textoSemSimbolo = simbolos.reduce((acc, simbolo) => {
             return acc.split(simbolo).join('').trim()
-         }, el)
-      })
-   }
+         }, texto)
+         subscriber.next(textoSemSimbolo);
+      }
+  }))
 }
 
 export function separarTextoPor(simbolo) {

@@ -1,1 +1,1 @@
-filtrarExtensao('srt')
+ // separarTextoPor(' '),

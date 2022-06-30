@@ -1,4 +1,6 @@
 import path from 'path';
+import { first } from 'rxjs';
+import { toArray  } from 'rxjs/operators';
 import {fileURLToPath} from 'url';
 import {lerDiretorio, filtrarExtensao,separarTextoPor, lerArquivos,lerArquivo, removerSeVazio, removerSeIncluir,removerSeApenasNumero, removerSimbolos, ordenarPorAtributoNumerico} from './funcoes.js'
 
@@ -31,9 +33,16 @@ const agruparPalavras = (palavras) => {
 lerDiretorio(caminho).pipe(
     filtrarExtensao('srt'),
     lerArquivo(),
-    separarTextoPor('\n')
+    separarTextoPor('\n'),
+    removerSeVazio(),
+    removerSeApenasNumero(),
+    removerSimbolos(simbolos),
+    separarTextoPor(' '),
+    removerSeVazio(),
+    removerSeApenasNumero(),
+    toArray()
 
-).subscribe(console.log)
+).subscribe(value => console.log(value))
 
 
 //  lerDiretorio(caminho)
